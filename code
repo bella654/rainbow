@@ -1,0 +1,67 @@
+// Create a canvas element and set its dimensions
+const canvas = document.createElement('canvas');
+canvas.width = 800;
+canvas.height = 600;
+document.body.appendChild(canvas);
+
+// Get the canvas context
+const ctx = canvas.getContext('2d');
+
+// Create an array of rainbow colors
+const colors = [
+  '#ff0000', // red
+  '#ff7f00', // orange
+  '#ffff00', // yellow
+  '#00ff00', // green
+  '#0000ff', // blue
+  '#4b0082', // indigo
+  '#9400d3'  // violet
+];
+
+// Set the initial color to the first color in the array
+let colorIndex = 0;
+let color = colors[colorIndex];
+
+// Create a function to draw the rainbow
+function drawRainbow() {
+  // Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw the rainbow
+  for (let i = 0; i < colors.length; i++) {
+    ctx.fillStyle = colors[i];
+    ctx.beginPath();
+    ctx.arc(canvas.width / 2, canvas.height / 2, 300 - (i * 40), 0, 2 * Math.PI);
+    ctx.fill();
+  }
+
+  // Increase the color index and update the color
+  colorIndex = (colorIndex + 1) % colors.length;
+  color = colors[colorIndex];
+
+  // Set the shadow color and offset
+  ctx.shadowColor = color;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
+
+  // Create a function to animate the shimmer effect
+  function shimmer() {
+    // Draw a rectangle with the current color and shadow
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Randomize the shadow offset and redraw the rainbow
+    ctx.shadowOffsetX = Math.random() * 20 - 10;
+    ctx.shadowOffsetY = Math.random() * 20 - 10;
+    drawRainbow();
+
+    // Schedule the next animation frame
+    requestAnimationFrame(shimmer);
+  }
+
+  // Start the shimmer animation
+  shimmer();
+}
+
+// Call the drawRainbow function to start the animation
+drawRainbow();
